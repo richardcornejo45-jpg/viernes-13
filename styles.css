@@ -1,0 +1,1423 @@
+/* ==========================================================================
+   VIERNES 13 • MARCOS MENCHACA — ESTILOS PRINCIPALES (styles.css)
+   Estética: Dark Indie, Romántica Nocturna, Polaroid Inmersiva y Neomorfismo Sutil
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. VARIABLES CSS GLOBALES
+   -------------------------------------------------------------------------- */
+:root {
+    /* Paleta Nocturna & Dark Indie */
+    --bg-dark-primary: #0B090C;
+    --bg-dark-secondary: #140D13;
+    --bg-dark-tertiary: #1A1118;
+    --bg-glass: rgba(22, 16, 23, 0.75);
+    --bg-glass-card: rgba(26, 17, 24, 0.65);
+    --bg-glass-border: rgba(255, 255, 255, 0.08);
+    --bg-glass-border-hover: rgba(220, 38, 38, 0.35);
+
+    /* Acentos Rojos y Rosas (Sangre, Rosa y Fuego Romántico) */
+    --accent-red: #DC2626;
+    --accent-crimson: #E11D48;
+    --accent-rose: #FB7185;
+    --accent-rose-light: #FFE4E6;
+    --accent-wax: #991B1B;
+    --accent-glow: rgba(220, 38, 38, 0.3);
+    --accent-glow-intense: rgba(225, 29, 72, 0.55);
+
+    /* Textos */
+    --text-pure: #FFFFFF;
+    --text-primary: #F3F4F6;
+    --text-muted: #9CA3AF;
+    --text-dim: #6B7280;
+    --polaroid-text: #1F2937;
+
+    /* Tipografías */
+    --font-marker: 'Permanent Marker', cursive, sans-serif;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+    /* Sombras y Luces */
+    --shadow-polaroid: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 35px rgba(220, 38, 38, 0.2);
+    --shadow-heartbeat: 0 20px 50px rgba(220, 38, 38, 0.25);
+    --shadow-glow-button: 0 10px 25px -5px rgba(225, 29, 72, 0.5);
+
+    /* Transiciones */
+    --transition-smooth: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* --------------------------------------------------------------------------
+   2. REINICIO Y CONFIGURACIÓN BASE
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    background-color: var(--bg-dark-primary);
+}
+
+body {
+    font-family: var(--font-sans);
+    background: radial-gradient(circle at 50% 20%, #1A1118 0%, #120A10 45%, #0B090C 100%);
+    background-attachment: fixed;
+    color: var(--text-primary);
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    position: relative;
+    line-height: 1.6;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. CANVASES DE FONDO (PARTÍCULAS Y EXPLOSIONES)
+   -------------------------------------------------------------------------- */
+.particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.burst-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* --------------------------------------------------------------------------
+   4. PANTALLA INICIAL: SOBRE / CARTA CERRADA
+   -------------------------------------------------------------------------- */
+.intro-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #191017 0%, #0D090E 70%, #060507 100%);
+    padding: 1.5rem;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.intro-screen.is-opening {
+    opacity: 0;
+    transform: scale(1.06);
+    pointer-events: none;
+}
+
+.intro-container {
+    max-width: 520px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* Insignia superior */
+.intro-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: rgba(220, 38, 38, 0.12);
+    border: 1px solid rgba(220, 38, 38, 0.25);
+    border-radius: 999px;
+    margin-bottom: 2rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    color: var(--accent-rose);
+    backdrop-filter: blur(8px);
+}
+
+.badge-dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent-red);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--accent-red);
+    animation: pulseDot 2s infinite ease-in-out;
+}
+
+@keyframes pulseDot {
+    0%, 100% { opacity: 0.4; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.3); }
+}
+
+/* SOBRE FÍSICO 3D */
+.envelope-wrapper {
+    perspective: 1000px;
+    margin-bottom: 2.2rem;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.envelope-wrapper:hover,
+.envelope-wrapper:focus-visible {
+    transform: translateY(-6px) scale(1.02);
+}
+
+.envelope {
+    width: 270px;
+    height: 175px;
+    position: relative;
+    background: #171216;
+    border-radius: 8px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 30px rgba(220, 38, 38, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Fondo interior del sobre */
+.envelope-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #100B0F;
+    border-radius: 8px;
+}
+
+/* Carta interior que sobresale */
+.envelope-letter {
+    position: absolute;
+    bottom: 8px;
+    left: 14px;
+    width: calc(100% - 28px);
+    height: 90%;
+    background: #FDFBF7;
+    border-radius: 4px;
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.envelope-wrapper:hover .envelope-letter {
+    transform: translateY(-20px);
+}
+
+.letter-preview-line {
+    height: 4px;
+    width: 80%;
+    background: #E5E7EB;
+    border-radius: 2px;
+}
+
+.letter-preview-line.short {
+    width: 50%;
+}
+
+.letter-stamp {
+    align-self: flex-end;
+    font-size: 1.25rem;
+    margin-top: auto;
+}
+
+/* Solapa triangular superior */
+.envelope-flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    border-left: 135px solid transparent;
+    border-right: 135px solid transparent;
+    border-top: 95px solid #241A23;
+    transform-origin: top;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 4;
+}
+
+.envelope-wrapper.is-open .envelope-flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+}
+
+/* Bolsillo triangular frontal */
+.envelope-pocket {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 0;
+    border-left: 135px solid #1C141B;
+    border-right: 135px solid #1C141B;
+    border-bottom: 95px solid #221821;
+    border-radius: 0 0 8px 8px;
+    z-index: 3;
+}
+
+/* Sello de Lacre */
+.wax-seal {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    background: radial-gradient(circle at 35% 35%, #DC2626 0%, #991B1B 70%, #680C0C 100%);
+    border-radius: 50%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6), 0 0 20px rgba(220, 38, 38, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: transform 0.4s var(--transition-spring), opacity 0.4s ease;
+}
+
+.wax-seal-inner {
+    width: 36px;
+    height: 36px;
+    border: 1px dashed rgba(255, 255, 255, 0.35);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.seal-number {
+    font-family: var(--font-marker);
+    font-size: 1rem;
+    color: #FFE4E6;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.envelope-wrapper:hover .wax-seal {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Textos de la pantalla inicial */
+.intro-text-group {
+    margin-bottom: 2rem;
+}
+
+.intro-title {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.25;
+    margin-bottom: 0.75rem;
+    color: var(--text-pure);
+}
+
+.highlight-marker {
+    font-family: var(--font-marker);
+    color: var(--accent-crimson);
+    font-size: 2.1rem;
+    text-shadow: 0 0 20px rgba(225, 29, 72, 0.4);
+    display: inline-block;
+    transform: rotate(-2deg);
+}
+
+.intro-subtitle {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 440px;
+    margin: 0 auto;
+    font-weight: 400;
+}
+
+/* BOTÓN CENTRAL BRILLANTE */
+.btn-glow-envelope {
+    position: relative;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 1.1rem 2.4rem;
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    transition: var(--transition-spring);
+    overflow: hidden;
+}
+
+.btn-glow-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #E11D48 0%, #BE123C 50%, #991B1B 100%);
+    border-radius: 999px;
+    box-shadow: 0 10px 30px rgba(225, 29, 72, 0.45), 0 0 50px rgba(220, 38, 38, 0.3);
+    transition: var(--transition-smooth);
+    z-index: 1;
+}
+
+.btn-glow-envelope:hover .btn-glow-backdrop {
+    transform: scale(1.03);
+    box-shadow: 0 15px 40px rgba(225, 29, 72, 0.65), 0 0 65px rgba(220, 38, 38, 0.5);
+    background: linear-gradient(135deg, #F43F5E 0%, #E11D48 50%, #B91C1C 100%);
+}
+
+.btn-glow-envelope:active {
+    transform: scale(0.97);
+}
+
+.btn-content {
+    position: relative;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    letter-spacing: 0.02em;
+}
+
+.btn-icon {
+    font-size: 1.3rem;
+    animation: gentleWiggle 3s infinite ease-in-out;
+}
+
+@keyframes gentleWiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-8deg); }
+    75% { transform: rotate(8deg); }
+}
+
+.audio-hint {
+    margin-top: 1.25rem;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.hint-icon {
+    color: var(--accent-rose);
+}
+
+/* --------------------------------------------------------------------------
+   5. PANTALLA PRINCIPAL: TARJETA INMERSIVA & CONTENIDO
+   -------------------------------------------------------------------------- */
+.main-screen {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem 1.5rem 3.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.main-screen.is-hidden {
+    display: none;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.main-container {
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* ENCABEZADO DE EXPERIENCIA */
+.experience-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2.2rem;
+    gap: 1rem;
+}
+
+.now-playing-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.55rem 1.2rem;
+    background: var(--bg-glass);
+    border: 1px solid var(--bg-glass-border);
+    border-radius: 999px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--accent-crimson);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent-crimson);
+    animation: livePulse 1.8s infinite ease-in-out;
+}
+
+@keyframes livePulse {
+    0%, 100% { opacity: 0.5; transform: scale(0.9); }
+    50% { opacity: 1; transform: scale(1.35); }
+}
+
+.now-playing-text {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: 0.02em;
+}
+
+/* Mini ecualizador en la pastilla */
+.mini-equalizer {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 12px;
+}
+
+.eq-bar {
+    width: 2.5px;
+    background: var(--accent-crimson);
+    border-radius: 1px;
+    animation: miniEqBounce 1.2s infinite ease-in-out alternate;
+}
+
+.eq-bar:nth-child(1) { height: 40%; animation-delay: 0.1s; }
+.eq-bar:nth-child(2) { height: 80%; animation-delay: 0.3s; }
+.eq-bar:nth-child(3) { height: 60%; animation-delay: 0.2s; }
+
+.is-paused .eq-bar {
+    animation-play-state: paused;
+    height: 25% !important;
+}
+
+@keyframes miniEqBounce {
+    0% { height: 20%; }
+    100% { height: 100%; }
+}
+
+.btn-control-round {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--bg-glass);
+    border: 1px solid var(--bg-glass-border);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    transition: var(--transition-smooth);
+}
+
+.btn-control-round:hover {
+    border-color: var(--accent-crimson);
+    color: var(--accent-rose);
+    transform: scale(1.08);
+}
+
+.ctrl-icon {
+    width: 19px;
+    height: 19px;
+}
+
+/* --------------------------------------------------------------------------
+   6. CUADRÍCULA DE EXPERIENCIA (POLAROID + DEDICATORIA)
+   -------------------------------------------------------------------------- */
+.experience-layout {
+    display: grid;
+    grid-template-columns: 440px 1fr;
+    gap: 2.5rem;
+    align-items: start;
+}
+
+/* --------------------------------------------------------------------------
+   7. POLAROID Y REPRODUCTOR (COLUMNA IZQUIERDA)
+   -------------------------------------------------------------------------- */
+.polaroid-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.8rem;
+    width: 100%;
+}
+
+/* Escena 3D para el efecto Tilt */
+.polaroid-3d-scene {
+    perspective: 1200px;
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+/* Disco de Vinilo Decorativo */
+.vinyl-disc {
+    position: absolute;
+    top: 25px;
+    right: -25px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #0F0D10 0%, #171419 60%, #050406 100%);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation: spinVinyl 14s linear infinite;
+}
+
+.is-paused .vinyl-disc {
+    animation-play-state: paused;
+}
+
+.polaroid-3d-scene:hover .vinyl-disc {
+    right: -45px;
+}
+
+@keyframes spinVinyl {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.vinyl-grooves {
+    position: absolute;
+    width: 86%;
+    height: 86%;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 
+        inset 0 0 0 12px rgba(255, 255, 255, 0.02),
+        inset 0 0 0 25px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 45px rgba(255, 255, 255, 0.02),
+        inset 0 0 0 70px rgba(0, 0, 0, 0.6);
+}
+
+.vinyl-label {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #DC2626 0%, #991B1B 75%, #4C0519 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #FFF;
+    border: 3px solid #111;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 2;
+}
+
+.vinyl-label::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #000;
+    border-radius: 50%;
+    border: 2px solid #555;
+}
+
+.vinyl-star {
+    font-size: 0.75rem;
+    color: #FFE4E6;
+}
+
+.vinyl-title {
+    font-family: var(--font-marker);
+    font-size: 0.6rem;
+    letter-spacing: 0.05em;
+    color: #FFE4E6;
+    margin-top: 2px;
+}
+
+/* TARJETA POLAROID */
+.polaroid-card {
+    position: relative;
+    z-index: 2;
+    background: #FAFAFA;
+    border-radius: 10px;
+    padding: 16px 16px 24px;
+    box-shadow: var(--shadow-polaroid);
+    transform-style: preserve-3d;
+    transition: transform 0.2s cubic-bezier(0.1, 0.8, 0.3, 1), box-shadow 0.4s ease;
+    will-change: transform;
+    overflow: hidden;
+}
+
+/* Latido y brillo al ritmo de la música */
+.polaroid-card.is-playing {
+    animation: heartbeatPulse 2.8s infinite ease-in-out;
+}
+
+@keyframes heartbeatPulse {
+    0%, 100% {
+        box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 35px rgba(220, 38, 38, 0.2);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 20px 50px rgba(220, 38, 38, 0.38);
+        transform: scale(1.018);
+    }
+}
+
+/* Reflejo Glare */
+.polaroid-glare {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 65%);
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Marco de la Foto */
+.polaroid-photo-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: #0B090C;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.polaroid-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.6s ease;
+    filter: contrast(1.05) saturate(1.05);
+}
+
+.polaroid-card:hover .polaroid-img {
+    transform: scale(1.03);
+}
+
+.photo-ambient-vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+    pointer-events: none;
+}
+
+/* Pie de la Polaroid */
+.polaroid-footer {
+    padding-top: 18px;
+    text-align: center;
+}
+
+.polaroid-marker-title {
+    font-family: var(--font-marker);
+    font-size: 2.2rem;
+    color: #DC2626;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 6px;
+    text-shadow: 0 2px 8px rgba(220, 38, 38, 0.25);
+    transform: rotate(-1deg);
+}
+
+.polaroid-marker-caption {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: #4B5563;
+}
+
+/* --------------------------------------------------------------------------
+   8. MINI REPRODUCTOR VISUAL DE AUDIO
+   -------------------------------------------------------------------------- */
+.player-container {
+    width: 100%;
+    max-width: 360px;
+    background: var(--bg-glass);
+    border: 1px solid var(--bg-glass-border);
+    border-radius: 16px;
+    padding: 1.4rem;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.45);
+    transition: var(--transition-smooth);
+}
+
+.player-container:hover {
+    border-color: var(--bg-glass-border-hover);
+}
+
+.player-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.1rem;
+}
+
+.player-meta {
+    display: flex;
+    flex-direction: column;
+}
+
+.track-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-pure);
+}
+
+.track-artist {
+    font-size: 0.82rem;
+    color: var(--accent-rose);
+}
+
+/* Visualizador de Ondas de Sonido */
+.sound-wave-bars {
+    display: flex;
+    align-items: center;
+    gap: 3.5px;
+    height: 24px;
+    padding: 0 4px;
+}
+
+.wave-bar {
+    width: 3px;
+    height: 6px;
+    background: linear-gradient(to top, var(--accent-red), var(--accent-rose));
+    border-radius: 999px;
+    transition: height 0.15s ease;
+}
+
+.wave-bar.is-animated {
+    animation: soundWavePulse 1.2s infinite ease-in-out alternate;
+}
+
+.wave-bar:nth-child(1) { animation-delay: 0.05s; }
+.wave-bar:nth-child(2) { animation-delay: 0.25s; }
+.wave-bar:nth-child(3) { animation-delay: 0.15s; }
+.wave-bar:nth-child(4) { animation-delay: 0.45s; }
+.wave-bar:nth-child(5) { animation-delay: 0.3s; }
+.wave-bar:nth-child(6) { animation-delay: 0.5s; }
+.wave-bar:nth-child(7) { animation-delay: 0.2s; }
+.wave-bar:nth-child(8) { animation-delay: 0.4s; }
+.wave-bar:nth-child(9) { animation-delay: 0.1s; }
+
+@keyframes soundWavePulse {
+    0% { height: 4px; }
+    50% { height: 22px; }
+    100% { height: 8px; }
+}
+
+/* Barra de Progreso */
+.player-progress-section {
+    margin-bottom: 1.1rem;
+}
+
+.progress-bar-wrapper {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    cursor: pointer;
+    overflow: visible;
+    margin-bottom: 0.45rem;
+    transition: height 0.2s ease;
+}
+
+.progress-bar-wrapper:hover {
+    height: 8px;
+}
+
+.progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #DC2626 0%, #F43F5E 100%);
+    border-radius: 999px;
+    box-shadow: 0 0 12px rgba(244, 63, 94, 0.6);
+}
+
+.progress-handle {
+    position: absolute;
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%) scale(0);
+    width: 12px;
+    height: 12px;
+    background: #FFFFFF;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+    transition: transform 0.2s ease;
+}
+
+.progress-bar-wrapper:hover .progress-handle {
+    transform: translateY(-50%) scale(1);
+}
+
+.player-time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Controles de Reproducción */
+.player-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.2rem;
+    margin-bottom: 0.8rem;
+}
+
+.ctrl-btn-secondary {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.ctrl-btn-secondary:hover {
+    color: var(--text-pure);
+    background: rgba(255, 255, 255, 0.12);
+    transform: scale(1.08);
+}
+
+.ctrl-btn-secondary svg {
+    width: 17px;
+    height: 17px;
+}
+
+.ctrl-btn-primary {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+    border: none;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(225, 29, 72, 0.45);
+    transition: var(--transition-spring);
+}
+
+.ctrl-btn-primary:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 25px rgba(225, 29, 72, 0.65);
+}
+
+.ctrl-btn-primary:active {
+    transform: scale(0.95);
+}
+
+.btn-play-icon {
+    width: 22px;
+    height: 22px;
+}
+
+/* Insignia de Estado de Audio */
+.audio-status-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    padding-top: 0.4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.status-indicator {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #10B981;
+}
+
+/* REPRODUCTOR ALTERNATIVO EMBEBIDO */
+.fallback-embed-wrapper {
+    margin-top: 1rem;
+    padding-top: 0.8rem;
+    border-top: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.fallback-embed-wrapper.is-hidden {
+    display: none;
+}
+
+.fallback-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.78rem;
+    color: var(--accent-rose);
+    margin-bottom: 0.5rem;
+}
+
+.btn-close-sm {
+    background: transparent;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 2px 6px;
+}
+
+.btn-close-sm:hover {
+    color: var(--text-pure);
+}
+
+.iframe-responsive {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #000;
+}
+
+.iframe-responsive iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* --------------------------------------------------------------------------
+   9. DEDICATORIA Y ACCIÓN (COLUMNA DERECHA)
+   -------------------------------------------------------------------------- */
+.dedication-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.dedication-card {
+    background: var(--bg-glass-card);
+    border: 1px solid var(--bg-glass-border);
+    border-radius: 20px;
+    padding: 2.2rem;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    position: relative;
+    overflow: hidden;
+}
+
+.dedication-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(225, 29, 72, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.dedication-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(225, 29, 72, 0.12);
+    border: 1px solid rgba(225, 29, 72, 0.25);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--accent-rose);
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+}
+
+.dedication-title {
+    font-family: var(--font-serif);
+    font-size: 2.15rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--text-pure);
+    margin-bottom: 1.5rem;
+}
+
+.highlight-title {
+    font-family: var(--font-marker);
+    color: var(--accent-crimson);
+    font-size: 2.3rem;
+    text-shadow: 0 0 20px rgba(225, 29, 72, 0.4);
+    display: inline-block;
+    transform: rotate(-1.5deg);
+}
+
+/* Cuerpo del Mensaje */
+.dedication-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    margin-bottom: 2rem;
+}
+
+.dedication-paragraph {
+    font-family: var(--font-serif);
+    font-size: 1.08rem;
+    color: #E5E7EB;
+    line-height: 1.75;
+}
+
+.lead-paragraph {
+    font-size: 1.16rem;
+    color: var(--text-pure);
+}
+
+.glow-word {
+    color: var(--accent-rose-light);
+    font-weight: 600;
+    text-shadow: 0 0 10px rgba(251, 113, 133, 0.5);
+}
+
+.quotation-highlight {
+    padding: 1rem 1.4rem;
+    background: rgba(225, 29, 72, 0.08);
+    border-left: 3px solid var(--accent-crimson);
+    border-radius: 0 10px 10px 0;
+    font-size: 1.15rem;
+    color: #FECDD3;
+}
+
+/* Pastillas de Frases Interactivas */
+.song-quotes-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 2.2rem;
+}
+
+.quote-pill {
+    padding: 0.5rem 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    font-size: 0.83rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    user-select: none;
+}
+
+.quote-pill:hover,
+.quote-pill:focus-visible {
+    background: rgba(225, 29, 72, 0.15);
+    border-color: rgba(225, 29, 72, 0.4);
+    color: #FFE4E6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(225, 29, 72, 0.2);
+}
+
+/* BOTÓN INTERACTIVO: ENVIAR ABRAZO & PEDIR DESEO */
+.interaction-zone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.btn-hug-action {
+    width: 100%;
+    position: relative;
+    background: linear-gradient(135deg, #E11D48 0%, #BE123C 60%, #991B1B 100%);
+    border: none;
+    border-radius: 16px;
+    padding: 1.15rem 1.8rem;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    box-shadow: var(--shadow-glow-button);
+    transition: var(--transition-spring);
+    overflow: hidden;
+}
+
+.btn-hug-action::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    transition: left 0.75s ease;
+}
+
+.btn-hug-action:hover::before {
+    left: 100%;
+}
+
+.btn-hug-action:hover {
+    transform: translateY(-3px) scale(1.015);
+    box-shadow: 0 16px 35px -5px rgba(225, 29, 72, 0.65);
+}
+
+.btn-hug-action:active {
+    transform: scale(0.97);
+}
+
+.btn-hug-icon {
+    font-size: 1.8rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-hug-action:hover .btn-hug-icon {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.btn-hug-labels {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    margin: 0 auto 0 1rem;
+}
+
+.btn-hug-main {
+    font-size: 1.08rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+
+.btn-hug-sub {
+    font-size: 0.78rem;
+    color: #FFE4E6;
+    opacity: 0.9;
+}
+
+.btn-hug-sparkle {
+    font-size: 1.4rem;
+}
+
+/* Contador de Abrazos */
+.hug-counter-badge {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.counter-number {
+    color: var(--accent-rose);
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+/* Pie de Página */
+.experience-footer {
+    text-align: center;
+    padding-top: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+}
+
+.experience-footer em {
+    color: var(--accent-rose);
+    font-style: normal;
+}
+
+/* --------------------------------------------------------------------------
+   10. NOTIFICACIÓN TOAST (MENSAJES BONITOS)
+   -------------------------------------------------------------------------- */
+.toast-wish {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+    z-index: 1000;
+    background: rgba(26, 17, 24, 0.94);
+    border: 1px solid rgba(225, 29, 72, 0.4);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(220, 38, 38, 0.3);
+    border-radius: 14px;
+    padding: 1rem 1.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    max-width: 420px;
+    width: 90%;
+    backdrop-filter: blur(16px);
+    transition: opacity 0.4s var(--transition-smooth), transform 0.4s var(--transition-smooth);
+}
+
+.toast-wish.is-hidden {
+    opacity: 0;
+    transform: translateX(-50%) translateY(40px);
+    pointer-events: none;
+}
+
+.toast-icon {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+}
+
+.toast-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.toast-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 2px;
+}
+
+.toast-message {
+    font-size: 0.82rem;
+    color: #E5E7EB;
+    line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   11. CLASES AUXILIARES Y ANIMACIONES
+   -------------------------------------------------------------------------- */
+.is-hidden {
+    display: none !important;
+}
+
+/* --------------------------------------------------------------------------
+   12. DISEÑO RESPONSIVO (MÓVIL Y PANTALLAS PEQUEÑAS)
+   -------------------------------------------------------------------------- */
+@media (max-width: 960px) {
+    .experience-layout {
+        grid-template-columns: 1fr;
+        gap: 2.2rem;
+    }
+
+    .polaroid-column {
+        max-width: 440px;
+        margin: 0 auto;
+    }
+
+    .dedication-card {
+        padding: 1.8rem;
+    }
+
+    .dedication-title {
+        font-size: 1.85rem;
+    }
+
+    .highlight-title {
+        font-size: 1.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .intro-title {
+        font-size: 1.6rem;
+    }
+
+    .highlight-marker {
+        font-size: 1.7rem;
+    }
+
+    .intro-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .envelope {
+        width: 230px;
+        height: 155px;
+    }
+
+    .envelope-flap {
+        border-left-width: 115px;
+        border-right-width: 115px;
+        border-top-width: 80px;
+    }
+
+    .envelope-pocket {
+        border-left-width: 115px;
+        border-right-width: 115px;
+        border-bottom-width: 80px;
+    }
+
+    .btn-glow-envelope {
+        padding: 0.95rem 1.8rem;
+        font-size: 0.95rem;
+        width: 100%;
+    }
+
+    .polaroid-card {
+        padding: 12px 12px 18px;
+    }
+
+    .polaroid-marker-title {
+        font-size: 1.8rem;
+    }
+
+    .vinyl-disc {
+        display: none; /* En móviles muy pequeños ocultamos el disco que sobresale para evitar desborde horizontal */
+    }
+
+    .dedication-card {
+        padding: 1.4rem;
+        border-radius: 16px;
+    }
+
+    .dedication-paragraph {
+        font-size: 0.98rem;
+    }
+
+    .btn-hug-action {
+        padding: 1rem 1.2rem;
+    }
+
+    .btn-hug-main {
+        font-size: 0.95rem;
+    }
+
+    .btn-hug-sub {
+        font-size: 0.72rem;
+    }
+}
